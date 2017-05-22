@@ -1,6 +1,6 @@
 %function setupBSPS(rows,cols,sheets)
     
-    rows = 6;
+    rows = 5;
     cols = 6;
     sheets = 6;
     
@@ -9,7 +9,7 @@
     %Ship sizes: 6,5,4,4,3,3,2,spaceStation
     
     %Create cell array of ship lengths
-    shiplengths = [6,5,4,4,3,3,2];
+    shiplengths = [6,5,4,4,3,3,2,3000];
     %Go through the ship lengths and delete those that do not fit
     for i = size(shiplengths,2):-1:1
         if(shiplengths(i) > rows && shiplengths(i) > cols && shiplengths(i) > sheets)
