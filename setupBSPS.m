@@ -1,7 +1,5 @@
 %function setupBSPS(rows,cols,sheets)
     
-    Test0522 = 1;
-     
     rows = 6;
     cols = 6;
     sheets = 6;
