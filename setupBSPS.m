@@ -20,7 +20,7 @@
     %Loop through the remaining ships and ask where the user wants to place
     %them
     for i = 1:size(shiplengths,2)
-        disp('i = ' + string(i));
+        disp('i = ' + num2str(i));
         theLength = shiplengths(i);
         %Flag for a redo in case entry is inappropriate
         redo = true;
