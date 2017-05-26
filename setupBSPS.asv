@@ -70,8 +70,7 @@
     %them
     for i = 1:size(shiplengths,2)
 
-        %disp('i = ' + num2str(i));
-        disp(i);
+        disp('i = ' + num2str(i));
         theLength = shiplengths(i);
         
         disp('Current board');
@@ -99,10 +98,41 @@
                 continue;
             %Continue with the asking of the second question
             else
+                %Check to see which directions are available
                 
-                %Create a matrix of available options
-                optionsStore = createOptionsStore(headPlace,shipBoard);
-
+                %Create a storage for available options
+                optionsStore = [];
+                
+                %Check downwards
+                if(headPlace(1)+theLength-1 <= rows && checkRange(headPlace,[headPlace(1)+theLength-1, headPlace(2), headPlace(3)],shipBoard))
+                    optionsStore(size(optionsStore,1)+1,:) = [headPlace(1)+theLength-1, headPlace(2), headPlace(3)];
+                end
+                
+                %Check upwards
+                if (headPlace(1)-theLength+1 >= 1 && checkRange(headPlace, [headPlace(1)-theLength-1, headPlace(2), headPlace(3)], shipBoard))
+                    optionsStore(size(optionsStore,1)+1,:) = [headPlace(1)-theLength-1, headPlace(2), headPlace(3)];
+                end
+                
+                %Check rightwards
+                if(headPlace(2)+theLength-1 <= cols && checkRange(headPlace, [headPlace(1), headPlace(2)+theLength-1, headPlace(3)], shipBoard))
+                    optionsStore(size(optionsStore,1)+1,:) = [headPlace(1), headPlace(2)+theLength-1, headPlace(3)];
+                end
+                
+                %Check leftwards
+                if (headPlace(2)-theLength+1 >= 1 && checkRange(headPlace, [headPlace(1), headPlace(2)-theLength+1, headPlace(3)], shipBoard))
+                    optionsStore(size(optionsStore,1)+1,:) = [headPlace(1), headPlace(2)-theLength+1, headPlace(3)];
+                end
+%                 
+%                 %Check inwards
+%                 if(headPlace(3)+theLength-1 <= sheets && checkRange(headPlace, [headPlace(1), headPlace(2), headPlace(3)+theLength-1], shipBoard))
+%                     optionsStore(size(optionsStore,1)+1,:) = [headPlace(1), headPlace(2), headPlace(3)+theLength-1];
+%                 end
+%                 
+%                 %Check outwards
+%                 if (headPlace(3)-theLength-1 >= 0 && checkRange(headPlace, [headPlace(1), headPlace(2), headPlace(3)-theLength-1], shipBoard))
+%                     optionsStore(size(optionsStore,1)+1,:) = [headPlace(1), headPlace(2), headPlace(3)-theLength-1];
+%                 end
+%                 
                 %Check to see if there are any valid options. If not, then
                 %re-ask the question
                 if isempty(optionsStore)
