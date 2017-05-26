@@ -5,6 +5,55 @@
     
     shipBoard = zeros(rows,cols,sheets);
     
+    %Place the 2x2x2 space station first
+    %If the board is not 2D, continue
+    if (size(shipBoard,1) ~= 1 && size(shipBoard,2) ~= 1 && size(shipBoard,3) ~= 1)
+        %While the place is not legit, do it again
+        validLocation = false;
+        while (validLocation == false)
+            topLeftForward = input('\nQ: Where would you like to place the top-left-forward corner of your 2x2x2 space station? \nAns:  ');
+            
+            %If the the input is not a matrix, or is any size other than
+            %1x3 matrix, redo the loop
+            if(~ismatrix(topLeftForward) || size(topLeftForward,1) ~= 1 || size(topLeftForward,2) ~= 3)
+                disp('---> Dimensions are not right. Please try again.');
+                %redo the while loop and ask again
+                continue;
+            %Check that all the values entered are within the scope of the
+            %board, -1 from the edges to fit the 2x2x2
+            elseif(topLeftForward(1) < 0 || topLeftForward(1) > rows-1 || topLeftForward(2) < 0 || topLeftForward(2) > cols-1 || topLeftForward(3) < 0 || topLeftForward(3) > sheets-1)
+                %If they are not, then redo the while loop and ask again
+                disp('---> Location is outside board. Please choose again.');
+                continue;
+            %We can now place the ship on the board
+            else
+                %Initialize variables for easy allocation
+                row = topLeftForward(1);
+                col = topLeftForward(2);
+                sheet = topLeftForward(3);
+                
+                %First row
+                shipBoard(row,col,sheet) = 1;
+                shipBoard(row,col+1,sheet) = 1;
+                shipBoard(row,col,sheet+1) = 1;
+                shipBoard(row,col+1,sheet+1) = 1;
+                
+                %Second row
+                shipBoard(row+1,col,sheet) = 1;
+                shipBoard(row+1,col+1,sheet) = 1;
+                shipBoard(row+1,col,sheet+1) = 1;
+                shipBoard(row+1,col+1,sheet+1) = 1;
+                
+                disp('Space station placed!');
+                
+                %Change the flag to break out of while loop
+                validLocation = true;
+            end
+        end
+    end
+    
+    
+    
     %Ship sizes: 6,5,4,4,3,3,2,spaceStation
     
     %Create cell array of ship lengths
@@ -20,11 +69,13 @@
     %them
     for i = 1:size(shiplengths,2)
         disp('i = ' + string(i));
+        disp('Current ship board:');
+        disp(shipBoard);
         theLength = shiplengths(i);
         %Flag for a redo in case entry is inappropriate
         redo = true;
         while (redo == true)
-            headPlace = input(['Q: Where would you like to place the start of your length ' num2str(theLength) ' ship?\n Ans:  ']);
+            headPlace = input(['\nQ: Where would you like to place the start of your length ' num2str(theLength) ' ship?\nAns:  ']);
             
             %Make sure it is a matrix, has 1 row, and 3 columns
             if(~ismatrix(headPlace) || size(headPlace,1) ~= 1 || size(headPlace,2) ~= 3)
@@ -90,7 +141,7 @@
                 invalidEntry = true;
                 while (invalidEntry == true)
                     %Display the options
-                    disp(['Q: Where would you like to place the end of your length ' num2str(theLength) ' ship?']);
+                    disp(['\nQ: Where would you like to place the end of your length ' num2str(theLength) ' ship?']);
                     disp('Please choose from the following available spaces below:');
                     for j = 1:size(optionsStore,1)
                        disp(['[' num2str(optionsStore(j,1)) ',' num2str(optionsStore(j,2)) ',' num2str(optionsStore(j,3)) ']']);
