@@ -1,4 +1,8 @@
-function output = createOptionsStore(headPlace, shipBoard)
+function output = createOptionsStore(headPlace, theLength, shipBoard)
+
+    rows = size(shipBoard,1);
+    cols = size(shipBoard,2);
+    %sheets = size(shipBoard,3);
 
     optionsStore = [];
                     

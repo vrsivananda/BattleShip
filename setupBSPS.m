@@ -4,11 +4,38 @@
     cols = 6;
     sheets = 6;
     
+    %======================================
+    %===== Initialize ships lengths =======
+    %======================================
+    %Ship sizes: 6,5,4,4,3,3,2,spaceStation
+    %Create cell array of ship lengths
+    shipLengths = [6,5,4,4,3,3,2];
+    
+    %Go through the ship lengths and delete those that do not fit
+    for i = size(shipLengths,2):-1:1
+        if(shipLengths(i) > rows && shipLengths(i) > cols && shipLengths(i) > sheets)
+            shipLengths(i) = [];
+        end
+    end
+    
+    %variable for number of ships
+    nShips = size(shipLengths,2);
+    
+    %Create a variable to store if the board is 2d
+    boardIs2D = ~(rows ~= 1 && cols ~= 1 && sheets ~= 1);
+    
+    
+    %===========================================
+    %===========  Setup for Human  =============
+    %===========================================
+    
+    %Ship board for human player
     shipBoard = zeros(rows,cols,sheets);
+    
     
     %Place the 2x2x2 space station first
     %If the board is not 2D, continue
-    if (size(shipBoard,1) ~= 1 && size(shipBoard,2) ~= 1 && size(shipBoard,3) ~= 1)
+    if (~boardIs2D)
         %While the place is not legit, do it again
         validLocation = false;
         while (validLocation == false)
@@ -28,22 +55,9 @@
                 continue;
             %We can now place the ship on the board
             else
-                %Initialize variables for easy allocation
-                row = topLeftForward(1);
-                col = topLeftForward(2);
-                sheet = topLeftForward(3);
                 
-                %First row
-                shipBoard(row,col,sheet) = 1;
-                shipBoard(row,col+1,sheet) = 1;
-                shipBoard(row,col,sheet+1) = 1;
-                shipBoard(row,col+1,sheet+1) = 1;
-                
-                %Second row
-                shipBoard(row+1,col,sheet) = 1;
-                shipBoard(row+1,col+1,sheet) = 1;
-                shipBoard(row+1,col,sheet+1) = 1;
-                shipBoard(row+1,col+1,sheet+1) = 1;
+                %Place the spaceStation in the location
+                shipBoard = placeSpaceStation(topLeftForward, shipBoard);
                 
                 disp('Space station placed!');
                 
@@ -53,26 +67,13 @@
         end
     end
     
-    
-    
-    %Ship sizes: 6,5,4,4,3,3,2,spaceStation
-    
-    %Create cell array of ship lengths
-    shiplengths = [6,5,4,4,3,3,2];
-    %Go through the ship lengths and delete those that do not fit
-    for i = size(shiplengths,2):-1:1
-        if(shiplengths(i) > rows && shiplengths(i) > cols && shiplengths(i) > sheets)
-            shiplengths(i) = [];
-        end
-    end
-    
     %Loop through the remaining ships and ask where the user wants to place
     %them
-    for i = 1:size(shiplengths,2)
-
+%    for i = 1:nShips 
+    while(false) %DEBUGGING
         %disp('i = ' + num2str(i));
         disp(i);
-        theLength = shiplengths(i);
+        theLength = shipLengths(i);
         
         disp('Current board');
         disp(shipBoard);
@@ -101,7 +102,7 @@
             else
                 
                 %Create a matrix of available options
-                optionsStore = createOptionsStore(headPlace,shipBoard);
+                optionsStore = createOptionsStore(headPlace,theLength,shipBoard);
 
                 %Check to see if there are any valid options. If not, then
                 %re-ask the question
@@ -150,4 +151,93 @@
         end %End of while loop, to ensure validity of response
     end %End of for loop, for each ship
 
+    
+    %==============================================
+    %=========== Setup for Computer  ==============
+    %==============================================
+    
+    %Create the ship board for the computer
+    shipBoardComputer = zeros(rows,cols,sheets);
+    
+    %Place space station if board is not 2D
+    if(~boardIs2D)
+        %Place space station in random corner
+        randSheetSS = randi(sheets-1);
+        arrayOfCornersForSpaceStation = [[1,1,randSheetSS]; [1,cols-1,randSheetSS]; [rows-1,1,randSheetSS]; [rows-1,cols-1,randSheetSS]];
+        shipBoardComputer = placeSpaceStation(arrayOfCornersForSpaceStation(randi(4),:),shipBoardComputer);
+        disp(shipBoardComputer);
+    end
+    
+    %Create another array of ship lengths except for the smallest ship 
+    shipLengthsComputer = shipLengths(1,1:end-1);
+    %Store the smallest ship separately
+    smallestShip = shipLengths(end);
+    
+    for i = 1:nShips
+        %Number of ships left in the array (we delete them once deployed)
+        nShipsLeft = length(shipLengthsComputer);
+        %Index of the current ship
+        currentIndex = randi(nShipsLeft);
+        %Current length of the ship
+        currentShipLength = shipLengthsComputer(currentIndex);
+        
+        %If first ship, pick another random corner
+        if (i == 1)
+            %if the space station is in the first half of sheets, pick a random
+            %sheet of the bottom half
+            if(randSheetSS < sheets/2)
+                randSheet = randi(sheets/2)+sheets/2;
+            %If it was in the second half, then pick a place in the first
+            %half
+            elseif(randSheetSS > sheets/2)
+                randSheet = randi(sheets/2);
+            %If it was somehow strangely placed(?), just randomize it
+            else
+                randSheet = randi(sheets);
+            end
+            
+            arrayOfCornersForShip = [[1,1,randSheet]; [1,cols,randSheet]; [rows,1,randSheet]; [rows,cols,randSheet]];
+            %Make sure that the location chosen is available
+            validLocation = false;
+            while(validLocation == false)
+                headPlace =  arrayOfCornersForShip(randi(4),:);
+                disp(['headplace: ' num2str(headPlace)]);
+                if(shipBoardComputer(headPlace) == 0)
+                    validLocation = true;
+                end
+            end
+            %Create options from the head place
+            optionsStore = createOptionsStore(headPlace,currentShipLength,shipBoardComputer);
+            %Select a random tail from the options
+            tailPlace = optionsStore(randi(size(optionsStore,1)),:);
+            disp(['tailplace: ' num2str(tailPlace)]);
+            %Fill in the board
+            shipBoardComputer = fillSpots(headPlace,tailPlace,shipBoardComputer);
+            
+        %Else if it is not the first ship nor the last (smallest) ship,
+        %place them randomly
+        elseif (i > 1 && i < nShips)
+            %Create an empty optionsStore
+            optionsStore = [];
+            %While there are no options, pick another random spot to place
+            %the head
+            while (isempty(optionsStore))
+                randRow = randi(rows);
+                randCol = randi(cols);
+                randSheet = randi(sheets);
+                headPlace = [randRow, randCol, randSheet];
+                %Create the options store
+                optionsStore = createOptionsStore(headPlace, currentShipLength, shipBoardComputer);
+            end
+            
+            tailPlace = optionsStore(randi(size(optionsStore,1)),:);
+            shipBoardComputer = fillSpots(headPlace, tailPlace, shipBoardComputer);
+        end
+        
+        disp('shipBoardComputer:');
+        disp(shipBoardComputer);
+        
+    end
+    
+    
 %end
