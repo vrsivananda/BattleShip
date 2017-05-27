@@ -69,8 +69,8 @@
     
     %Loop through the remaining ships and ask where the user wants to place
     %them
-%    for i = 1:nShips 
-    while(false) %DEBUGGING
+    for i = 1:nShips 
+    %while(false) %DEBUGGING
         %disp('i = ' + num2str(i));
         disp(i);
         theLength = shipLengths(i);
@@ -176,10 +176,17 @@
     for i = 1:nShips
         %Number of ships left in the array (we delete them once deployed)
         nShipsLeft = length(shipLengthsComputer);
-        %Index of the current ship
-        currentIndex = randi(nShipsLeft);
-        %Current length of the ship
-        currentShipLength = shipLengthsComputer(currentIndex);
+        %If we are not at the smallest ship
+        if (nShipsLeft ~= 0)
+            %Index of the current ship
+            currentIndex = randi(nShipsLeft);
+            %Current length of the ship
+            currentShipLength = shipLengthsComputer(currentIndex);
+            %Take the ship out of the array since it is selected
+            shipLengthsComputer(currentIndex) = [];
+        else
+            curerntShipLength = smallestShip;
+        end
         
         %If first ship, pick another random corner
         if (i == 1)
@@ -232,12 +239,48 @@
             
             tailPlace = optionsStore(randi(size(optionsStore,1)),:);
             shipBoardComputer = fillSpots(headPlace, tailPlace, shipBoardComputer);
-        end
-        
-        disp('shipBoardComputer:');
-        disp(shipBoardComputer);
-        
-    end
+        %Else if this is the last and smallest ship
+        elseif (i == nShips)
+            %Get the length of smallest ship (not sure why length above not
+            %working)
+            currentShipLength = smallestShip;
+            
+            %Check to see which is board that is least filled
+            filledSpotsArray = nan(1,sheets);
+            %Set up a minimum variable to store the minimum after going
+            %through all the sheets; intialize to maximum possible number
+            %+1
+            minSheet = rows*cols +1;
+            for j = 1:sheets
+                if (sum(sum(shipBoardComputer(:,:,j))) < minSheet)
+                    minSheet = j;
+                end
+            end
+            %Create an empty optionsStore
+            optionsStore = [];
+            %While there are no options, pick another random spot to place
+            %the head
+            while(isempty(optionsStore))
+                %Generate random rows and columns
+                randRow = randi(rows);
+                randCol = randi(cols);
+                
+                headPlace = [randRow, randCol, minSheet];
+                disp('headPlace:');
+                disp(headPlace);
+                disp('currentShipLenth: ');
+                disp(currentShipLength);
+                optionsStore = createOptionsStore(headPlace, currentShipLength, shipBoardComputer);
+            end
+            %Randomly select a position for the tailPlace from the
+            %optionsStore
+            tailPlace = optionsStore(randi(size(optionsStore,1)),:);
+            shipBoardComputer = fillSpots(headPlace, tailPlace, shipBoardComputer);
+        end %End of if for the ship number
+    end %End of for loop for all computer ships
+    
+    disp('shipBoardComputer:');
+    disp(shipBoardComputer);
     
     
 %end
