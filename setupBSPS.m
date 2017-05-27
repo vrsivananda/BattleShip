@@ -1,8 +1,16 @@
-%function setupBSPS(rows,cols,sheets)
+function setupBSPS(rows,cols,sheets)
     
-    rows = 6;
-    cols = 6;
-    sheets = 6;
+    %If there is less than 3 arguments, then use the default size
+    if (nargin ~= 3)
+        rows = 6;
+        cols = 6;
+        sheets = 6;
+    end
+    
+    %If any of the dimensions are less than 1, then throw an error
+    if (rows < 1 || cols < 1 || sheets < 1)
+        error('Rows, cols, and sheets must be more than 1!');
+    end
     
     %======================================
     %===== Initialize ships lengths =======
@@ -283,4 +291,4 @@
     disp(shipBoardComputer);
     
     
-%end
+end %End of function
