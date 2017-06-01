@@ -35,22 +35,21 @@ for i=1:nSpots
     [R, C, S] = ind2sub(size(ShotBoard),shotIndex);
     
     % The potential of containing a ship towards each sides is 0 if
-    % there is no more space or 
-    % some point on that side got shot but there is no hit
+    % there is no more space or some point on that side got shot
     Side1 = (any(ShotBoard(min([R,rows-(LT-1)]):min([R+hLT,rows]), C, ...
-        S)) == 1 || R == rows); % To the bottom
-    Side2 = (any(ShotBoard(max([R-hLT,1]):max([R,LT]), C, S)) == 1 || ...
-        R == 1); % To the top
+        S)) == 0 && R ~= rows); % To the bottom
+    Side2 = (any(ShotBoard(max([R-hLT,1]):max([R,LT]), C, S)) == 0 && ...
+        R ~= 1); % To the top
     Side3 = (any(ShotBoard(R,min([C,columns-(LT-1)]):min([C+hLT,columns]), ...
-        S)) == 1 || C == columns); % To the right
-    Side4 = (any(ShotBoard(R,max([C-hLT,1]):max([C,LT]), S)) == 1 || ...
-        C == 1); % To the left
+        S)) == 0 && C ~= columns); % To the right
+    Side4 = (any(ShotBoard(R,max([C-hLT,1]):max([C,LT]), S)) == 0 && ...
+        C ~= 1); % To the left
     Side5 = (any(ShotBoard(R,C,min([S,sheets-(LT-1)]):min([S+hLT,sheets]))...
-        ) == 1 || S == sheets); % To higher
-    Side6 = (any(ShotBoard(R,C,max([S-hLT,1]):max([S,LT]))) == 1 || ...
-        S == 1); % To lower
+        ) == 0 && S ~= sheets); % To higher
+    Side6 = (any(ShotBoard(R,C,max([S-hLT,1]):max([S,LT]))) == 0 && ...
+        S ~= 1); % To lower
     
-    ShipPotential = 6 - (Side1 + Side2 + Side3 + Side4 + Side5 + Side6);
+    ShipPotential = Side1 + Side2 + Side3 + Side4 + Side5 + Side6;
     
     % Rule 1: Never shoot a spot which has no possible ship on any side
     if (ShipPotential == 0)
