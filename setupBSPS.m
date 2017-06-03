@@ -1,4 +1,4 @@
-function setupBSPS(rows,cols,sheets)
+function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
     
     %If there is less than 3 arguments, then use the default size
     if (nargin ~= 3)
@@ -38,7 +38,7 @@ function setupBSPS(rows,cols,sheets)
     %===========================================
     
     %Ship board for human player
-    shipBoard = zeros(rows,cols,sheets);
+    shipBoardHuman = zeros(rows,cols,sheets);
     
     
     %Place the 2x2x2 space station first
@@ -65,7 +65,7 @@ function setupBSPS(rows,cols,sheets)
             else
                 
                 %Place the spaceStation in the location
-                shipBoard = placeSpaceStation(topLeftForward, shipBoard);
+                shipBoardHuman = placeSpaceStation(topLeftForward, shipBoardHuman);
                 
                 disp('Space station placed!');
                 
@@ -77,14 +77,14 @@ function setupBSPS(rows,cols,sheets)
     
     %Loop through the remaining ships and ask where the user wants to place
     %them
-    for i = 1:nShips 
-    %while(false) %DEBUGGING
+    %for i = 1:nShips %comment for DEBUGGING
+    while(false) %uncomment for DEBUGGING
         %disp('i = ' + num2str(i));
         disp(i);
         theLength = shipLengths(i);
         
         disp('Current board');
-        disp(shipBoard);
+        disp(shipBoardHuman);
         %Flag for a redo in case entry is inappropriate
         redo = true;
         while (redo == true)
@@ -102,7 +102,7 @@ function setupBSPS(rows,cols,sheets)
                 disp('---> Location is outside board. Please choose again.');
                 continue;
             %Check that the space is indeed available on the board
-            elseif(shipBoard(headPlace(1),headPlace(2),headPlace(3)) ~= 0 )
+            elseif(shipBoardHuman(headPlace(1),headPlace(2),headPlace(3)) ~= 0 )
                 %If it is not, then redo the while loop and ask again
                 disp('---> Location is taken. Please choose again.');
                 continue;
@@ -110,7 +110,7 @@ function setupBSPS(rows,cols,sheets)
             else
                 
                 %Create a matrix of available options
-                optionsStore = createOptionsStore(headPlace,theLength,shipBoard);
+                optionsStore = createOptionsStore(headPlace,theLength,shipBoardHuman);
 
                 %Check to see if there are any valid options. If not, then
                 %re-ask the question
@@ -150,7 +150,7 @@ function setupBSPS(rows,cols,sheets)
                     end
                 end
                 
-                shipBoard = fillSpots(headPlace, tailPlace, shipBoard);
+                shipBoardHuman = fillSpots(headPlace, tailPlace, shipBoardHuman);
                 
                 disp(['Length ' num2str(theLength) ' ship placed!']);
                 
@@ -193,19 +193,19 @@ function setupBSPS(rows,cols,sheets)
             %Take the ship out of the array since it is selected
             shipLengthsComputer(currentIndex) = [];
         else
-            curerntShipLength = smallestShip;
+            currentShipLength = smallestShip;
         end
         
         %If first ship, pick another random corner
         if (i == 1)
             %if the space station is in the first half of sheets, pick a random
             %sheet of the bottom half
-            if(randSheetSS < sheets/2)
-                randSheet = randi(sheets/2)+sheets/2;
+            if(randSheetSS < floor(floor(sheets/2)))
+                randSheet = randi(floor(floor(sheets/2)))+floor(floor(sheets/2));
             %If it was in the second half, then pick a place in the first
             %half
-            elseif(randSheetSS > sheets/2)
-                randSheet = randi(sheets/2);
+            elseif(randSheetSS > floor(floor(sheets/2)))
+                randSheet = randi(floor(floor(sheets/2)));
             %If it was somehow strangely placed(?), just randomize it
             else
                 randSheet = randi(sheets);
@@ -289,6 +289,5 @@ function setupBSPS(rows,cols,sheets)
     
     disp('shipBoardComputer:');
     disp(shipBoardComputer);
-    
-    
+  
 end %End of function
