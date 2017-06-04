@@ -1,8 +1,13 @@
 function output = createOptionsStore(headPlace, theLength, shipBoard)
-
+    
+    %for debugging
+    disp('-----------createOptionsStore----------');
+    disp('headPlace:');
+    disp(headPlace);
+    
     rows = size(shipBoard,1);
     cols = size(shipBoard,2);
-    %sheets = size(shipBoard,3);
+    sheets = size(shipBoard,3);
 
     optionsStore = [];
                     
@@ -32,8 +37,8 @@ function output = createOptionsStore(headPlace, theLength, shipBoard)
     end
 
     %Check outwards
-    if (headPlace(3)-theLength-1 >= 0 && checkRange(headPlace, [headPlace(1), headPlace(2), headPlace(3)-theLength-1], shipBoard))
-        optionsStore(size(optionsStore,1)+1,:) = [headPlace(1), headPlace(2), headPlace(3)-theLength-1];
+    if (headPlace(3)-theLength+1 >= 1 && checkRange(headPlace, [headPlace(1), headPlace(2), headPlace(3)-theLength+1], shipBoard))
+        optionsStore(size(optionsStore,1)+1,:) = [headPlace(1), headPlace(2), headPlace(3)-theLength+1];
     end
 
     output = optionsStore;

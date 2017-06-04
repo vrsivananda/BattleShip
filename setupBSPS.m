@@ -260,7 +260,7 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
             %+1
             minSheet = rows*cols +1;
             for j = 1:sheets
-                if (sum(sum(shipBoardComputer(:,:,j))) < minSheet)
+                if (sum(sum(shipBoardComputer(:,:,j)==1)) < minSheet)
                     minSheet = j;
                 end
             end
