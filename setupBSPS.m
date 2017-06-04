@@ -276,7 +276,7 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
                 headPlace = [randRow, randCol, minSheet];
                 disp('headPlace:');
                 disp(headPlace);
-                disp('currentShipLenth: ');
+                disp('currentShipLength: ');
                 disp(currentShipLength);
                 optionsStore = createOptionsStore(headPlace, currentShipLength, shipBoardComputer);
             end
