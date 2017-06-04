@@ -19,9 +19,14 @@ function shipsLeftVector = shipsLeft(shipBoard)
                 if(shipBoard(i,j,k) == 1)
                     %Counter to keep track of ship length
                     counter = 1;
+                    
+                    %Replace the box with 0 to prevent double counting
+                    shipBoard(i,j,k) = 0;
+                    
                     %Check each side of the box to see which direction it
                     %goes
                     
+                    %--------------------------
                     %If not down edge, check down
                     if(i < rows && shipBoard(i+1,j,k) == 1)
                         %Erase the spot to prevent future loops from
@@ -32,14 +37,16 @@ function shipsLeftVector = shipsLeft(shipBoard)
                         counter = counter + 1;
                         
                         %Keep checking until it is not 1
-                        while (i+counter < rows && shipBoard(i+counter,j,k) == 1)
+                        while (i+counter <= rows && shipBoard(i+counter,j,k) == 1)
                            shipBoard(i+counter,j,k) = 0;
                            counter = counter + 1;
                         end
                         %Push in the counter to the shipLengthsVector
-                        shipsLeftVector(size(shipsLeftVector)+1) = counter;
+                        shipsLeftVector(length(shipsLeftVector)+1) = counter;
+                        %disp(shipBoard); %debugging
                     end   
                     
+                    %--------------------------
                     %If not right edge, check right
                     if(j < cols && shipBoard(i,j+1,k) == 1)
                         %Erase the spot to prevent future loops from
@@ -50,14 +57,16 @@ function shipsLeftVector = shipsLeft(shipBoard)
                         counter = counter + 1;
                         
                         %Keep checking until it is not 1
-                        while (i+counter < cols && shipBoard(i,j+counter,k) == 1)
+                        while (j+counter <= cols && shipBoard(i,j+counter,k) == 1)
                            shipBoard(i,j+counter,k) = 0;
                            counter = counter + 1;
                         end
                         %Push in the counter to the shipLengthsVector
-                        shipsLeftVector(size(shipsLeftVector)+1) = counter;
+                        shipsLeftVector(length(shipsLeftVector)+1) = counter;
+                        %disp(shipBoard); %debugging
                     end  
                     
+                    %--------------------------
                     %If not inner(sheet) edge, check inner (sheet) 
                     if(k < sheets && shipBoard(i,j,k+1) == 1)
                         %Erase the spot to prevent future loops from
@@ -68,17 +77,20 @@ function shipsLeftVector = shipsLeft(shipBoard)
                         counter = counter + 1;
                         
                         %Keep checking until it is not 1
-                        while (i+counter < cols && shipBoard(i,j,k+counter) == 1)
+                        while (k+counter <= cols && shipBoard(i,j,k+counter) == 1)
                            shipBoard(i,j,k+counter) = 0;
                            counter = counter + 1;
                         end
                         %Push in the counter to the shipLengthsVector
-                        shipsLeftVector(size(shipsLeftVector)+1) = counter;
+                        shipsLeftVector(length(shipsLeftVector)+1) = counter;
+                        %disp(shipBoard); %debugging
                     end  
-                    
                 end %end of if box ==1 statement
             end %end of rows
         end %end of cols
     end %end of sheets
+    
+    disp('shipBoard after shipsLeft:');
+    disp(shipBoard);
 
 end

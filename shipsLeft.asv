@@ -1,5 +1,7 @@
+%IMPORTANT:
 %This function can only be used with the rule where the ships cannot touch
-%each ot
+%each other
+
 function shipsLeftVector = shipsLeft(shipBoard)
     
     %Get the board dimensions
@@ -17,6 +19,10 @@ function shipsLeftVector = shipsLeft(shipBoard)
                 if(shipBoard(i,j,k) == 1)
                     %Counter to keep track of ship length
                     counter = 1;
+                    
+                    %Replace the box with 0 to prevent double counting
+                    shipBoard(i,j,k) = 0;
+                    
                     %Check each side of the box to see which direction it
                     %goes
                     
@@ -48,7 +54,7 @@ function shipsLeftVector = shipsLeft(shipBoard)
                         counter = counter + 1;
                         
                         %Keep checking until it is not 1
-                        while (i+counter < cols && shipBoard(i,j+counter,k) == 1)
+                        while (j+counter < cols && shipBoard(i,j+counter,k) == 1)
                            shipBoard(i,j+counter,k) = 0;
                            counter = counter + 1;
                         end
@@ -66,13 +72,16 @@ function shipsLeftVector = shipsLeft(shipBoard)
                         counter = counter + 1;
                         
                         %Keep checking until it is not 1
-                        while (i+counter < cols && shipBoard(i,j,k+counter) == 1)
+                        while (k+counter < cols && shipBoard(i,j,k+counter) == 1)
                            shipBoard(i,j,k+counter) = 0;
                            counter = counter + 1;
                         end
                         %Push in the counter to the shipLengthsVector
-                        shipsLeftVector(size(shipsLeftVector)+1) = counter;
+                        shipsLeftVector(size(shipsLeftVector)+1) = counter
+                        
                     end  
+                    disp('shipBoard after shipsLeft:');
+                    disp(shipBoard);
                     
                 end %end of if box ==1 statement
             end %end of rows
