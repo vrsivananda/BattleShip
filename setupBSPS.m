@@ -1,4 +1,4 @@
-function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
+function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
     
     %If there is less than 3 arguments, then use the default size
     if (nargin ~= 3)
@@ -38,7 +38,7 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
     %===========================================
     
     %Ship board for human player
-    shipBoardHuman = zeros(rows,cols,sheets);
+    shipBoardH = zeros(rows,cols,sheets);
     
 %---Commented out because no spaceship---    
 %     %Place the 2x2x2 space station first
@@ -65,7 +65,7 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
 %             else
 %                 
 %                 %Place the spaceStation in the location
-%                 shipBoardHuman = placeSpaceStation(topLeftForward, shipBoardHuman);
+%                 shipBoardH = placeSpaceStation(topLeftForward, shipBoardH);
 %                 
 %                 disp('Space station placed!');
 %                 
@@ -84,7 +84,7 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
         theLength = shipLengths(i);
         
         disp('Current board');
-        disp(shipBoardHuman);
+        disp(shipBoardH);
         %Flag for a redo in case entry is inappropriate
         redo = true;
         while (redo == true)
@@ -102,7 +102,7 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
                 disp('---> Location is outside board. Please choose again.');
                 continue;
             %Check that the space is indeed available on the board
-            elseif(shipBoardHuman(headPlace(1),headPlace(2),headPlace(3)) ~= 0 )
+            elseif(shipBoardH(headPlace(1),headPlace(2),headPlace(3)) ~= 0 )
                 %If it is not, then redo the while loop and ask again
                 disp('---> Location is taken. Please choose again.');
                 continue;
@@ -110,7 +110,7 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
             else
                 
                 %Create a matrix of available options
-                optionsStore = createOptionsStore(headPlace,theLength,shipBoardHuman);
+                optionsStore = createOptionsStore(headPlace,theLength,shipBoardH);
 
                 %Check to see if there are any valid options. If not, then
                 %re-ask the question
@@ -150,7 +150,7 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
                     end
                 end
                 
-                shipBoardHuman = fillSpots(headPlace, tailPlace, shipBoardHuman);
+                shipBoardH = fillSpots(headPlace, tailPlace, shipBoardH);
                 
                 disp(['Length ' num2str(theLength) ' ship placed!']);
                 
@@ -165,7 +165,7 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
     %==============================================
     
     %Create the ship board for the computer
-    shipBoardComputer = zeros(rows,cols,sheets);
+    shipBoardAI = zeros(rows,cols,sheets);
 
 %---Commented out because no spaceship---
 %     %Place space station if board is not 2D
@@ -173,8 +173,8 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
 %         %Place space station in random corner
          randSheetSS = randi(sheets-1); %Uncommented because used below (to determine which half of the sheets to place the next ship)
 %         arrayOfCornersForSpaceStation = [[1,1,randSheetSS]; [1,cols-1,randSheetSS]; [rows-1,1,randSheetSS]; [rows-1,cols-1,randSheetSS]];
-%         shipBoardComputer = placeSpaceStation(arrayOfCornersForSpaceStation(randi(4),:),shipBoardComputer);
-%         disp(shipBoardComputer);
+%         shipBoardAI = placeSpaceStation(arrayOfCornersForSpaceStation(randi(4),:),shipBoardAI);
+%         disp(shipBoardAI);
 %     end
     
     %Create another array of ship lengths except for the smallest ship 
@@ -218,17 +218,17 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
             while(validLocation == false)
                 headPlace =  arrayOfCornersForShip(randi(4),:);
                 disp(['headplace: ' num2str(headPlace)]);
-                if(shipBoardComputer(headPlace) == 0)
+                if(shipBoardAI(headPlace) == 0)
                     validLocation = true;
                 end
             end
             %Create options from the head place
-            optionsStore = createOptionsStore(headPlace,currentShipLength,shipBoardComputer);
+            optionsStore = createOptionsStore(headPlace,currentShipLength,shipBoardAI);
             %Select a random tail from the options
             tailPlace = optionsStore(randi(size(optionsStore,1)),:);
             disp(['tailplace: ' num2str(tailPlace)]);
             %Fill in the board
-            shipBoardComputer = fillSpots(headPlace,tailPlace,shipBoardComputer);
+            shipBoardAI = fillSpots(headPlace,tailPlace,shipBoardAI);
             
         %Else if it is not the first ship nor the last (smallest) ship,
         %place them randomly
@@ -243,11 +243,11 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
                 randSheet = randi(sheets);
                 headPlace = [randRow, randCol, randSheet];
                 %Create the options store
-                optionsStore = createOptionsStore(headPlace, currentShipLength, shipBoardComputer);
+                optionsStore = createOptionsStore(headPlace, currentShipLength, shipBoardAI);
             end
             
             tailPlace = optionsStore(randi(size(optionsStore,1)),:);
-            shipBoardComputer = fillSpots(headPlace, tailPlace, shipBoardComputer);
+            shipBoardAI = fillSpots(headPlace, tailPlace, shipBoardAI);
         %Else if this is the last and smallest ship
         elseif (i == nShips)
             %Get the length of smallest ship (not sure why length above not
@@ -261,7 +261,7 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
             %+1
             minSheet = rows*cols +1;
             for j = 1:sheets
-                if (sum(sum(shipBoardComputer(:,:,j)==1)) < minSheet)
+                if (sum(sum(shipBoardAI(:,:,j)==1)) < minSheet)
                     minSheet = j;
                 end
             end
@@ -279,18 +279,18 @@ function [shipBoardHuman, shipBoardComputer] = setupBSPS(rows,cols,sheets)
                 disp(headPlace);
                 disp('currentShipLength: ');
                 disp(currentShipLength);
-                optionsStore = createOptionsStore(headPlace, currentShipLength, shipBoardComputer);
+                optionsStore = createOptionsStore(headPlace, currentShipLength, shipBoardAI);
             end
             %Randomly select a position for the tailPlace from the
             %optionsStore
             tailPlace = optionsStore(randi(size(optionsStore,1)),:);
-            shipBoardComputer = fillSpots(headPlace, tailPlace, shipBoardComputer);
+            shipBoardAI = fillSpots(headPlace, tailPlace, shipBoardAI);
         end %End of if for the ship number
     end %End of for loop for all computer ships
     
     %Remove all the blockers (5s) and replace them with 0s
-    shipBoardComputer(shipBoardComputer == 5) = 0;
-    disp('shipBoardComputer:');
-    disp(shipBoardComputer);
+    shipBoardAI(shipBoardAI == 5) = 0;
+    disp('shipBoardAI:');
+    disp(shipBoardAI);
   
 end %End of function
