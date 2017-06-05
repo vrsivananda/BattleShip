@@ -2,6 +2,9 @@
 %This function can only be used with the rule where the ships cannot touch
 %each other
 
+%Used to calculate the number of ships left on the board (assuming that
+%those that should be sunk are sunk).
+
 function shipsLeftVector = shipsLeft(shipBoard)
     
     %Get the board dimensions
@@ -16,7 +19,7 @@ function shipsLeftVector = shipsLeft(shipBoard)
             for i = 1:rows
                 %If there is a ship, start the procedure to count the
                 %length and mark the board once it is counted
-                if(shipBoard(i,j,k) == 1)
+                if(shipBoard(i,j,k) == 1 || shipBoard(i,j,k) == 2)
                     %Counter to keep track of ship length
                     counter = 1;
                     
@@ -28,7 +31,7 @@ function shipsLeftVector = shipsLeft(shipBoard)
                     
                     %--------------------------
                     %If not down edge, check down
-                    if(i < rows && shipBoard(i+1,j,k) == 1)
+                    if(i < rows && (shipBoard(i+1,j,k) == 1 || shipBoard(i+1,j,k) == 2))
                         %Erase the spot to prevent future loops from
                         %counting
                         shipBoard(i+1,j,k) = 0;
@@ -36,8 +39,8 @@ function shipsLeftVector = shipsLeft(shipBoard)
                         %Increment the counter
                         counter = counter + 1;
                         
-                        %Keep checking until it is not 1
-                        while (i+counter <= rows && shipBoard(i+counter,j,k) == 1)
+                        %Keep checking until it is not 1 or 2
+                        while (i+counter <= rows && (shipBoard(i+counter,j,k) == 1 || shipBoard(i+counter,j,k) == 2))
                            shipBoard(i+counter,j,k) = 0;
                            counter = counter + 1;
                         end
@@ -48,7 +51,7 @@ function shipsLeftVector = shipsLeft(shipBoard)
                     
                     %--------------------------
                     %If not right edge, check right
-                    if(j < cols && shipBoard(i,j+1,k) == 1)
+                    if(j < cols && (shipBoard(i,j+1,k) == 1 || shipBoard(i,j+1,k) == 2))
                         %Erase the spot to prevent future loops from
                         %counting
                         shipBoard(i,j+1,k) = 0;
@@ -56,8 +59,8 @@ function shipsLeftVector = shipsLeft(shipBoard)
                         %Increment the counter
                         counter = counter + 1;
                         
-                        %Keep checking until it is not 1
-                        while (j+counter <= cols && shipBoard(i,j+counter,k) == 1)
+                        %Keep checking until it is not 1 or 2
+                        while (j+counter <= cols && (shipBoard(i,j+counter,k) == 1 || shipBoard(i,j+counter,k) == 2))
                            shipBoard(i,j+counter,k) = 0;
                            counter = counter + 1;
                         end
@@ -68,7 +71,7 @@ function shipsLeftVector = shipsLeft(shipBoard)
                     
                     %--------------------------
                     %If not inner(sheet) edge, check inner (sheet) 
-                    if(k < sheets && shipBoard(i,j,k+1) == 1)
+                    if(k < sheets && (shipBoard(i,j,k+1) == 1 || shipBoard(i,j,k+1) == 2))
                         %Erase the spot to prevent future loops from
                         %counting
                         shipBoard(i,j,k+1) = 0;
@@ -76,8 +79,8 @@ function shipsLeftVector = shipsLeft(shipBoard)
                         %Increment the counter
                         counter = counter + 1;
                         
-                        %Keep checking until it is not 1
-                        while (k+counter <= cols && shipBoard(i,j,k+counter) == 1)
+                        %Keep checking until it is not 1 or 2
+                        while (k+counter <= cols && (shipBoard(i,j,k+counter) == 1 || shipBoard(i,j,k+counter) == 2))
                            shipBoard(i,j,k+counter) = 0;
                            counter = counter + 1;
                         end

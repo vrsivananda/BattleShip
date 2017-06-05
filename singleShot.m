@@ -13,7 +13,7 @@ theRestShipLengths = [5 5 5 5 5];
 % the minimum Length of Targets
 LT = min(theRestShipLengths);
 % Half length of the smallest ship
-hLT = floor(LT/2);
+hLT = floor((LT-1)/2);
 minShip = zeros(1,LT);
 % "This part" ends
 
