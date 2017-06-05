@@ -9,19 +9,14 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
     shipsLeftVector = shipsLeft(shipBoardH);
     nshipsLeft = length(shipsLeftVector);
     
-    %While there are ships which have been hit but not sunk and the
+    %If there are ships which have been hit but not sunk and the
     %there are still shots left, fire type 2 shots
-    while( any(any(any(guessBoardAI == 2))) && shotCounter < nShotsAI )
-    
-        %If there are ships that have been hit but not been sunk, then fire
-        %type 2 shots
-        
-        shotBoard = fireType2Shots(shotBoard, nShotsAI, min(shipsLeftVector));
-        
-        
+    if ( any(any(any(guessBoardAI == 2))) && shotCounter < nShotsAI )
+        %A matrix of shots are returned
+        type2ShotsStore = fireType2Shots(shotBoard, nShotsAI, min(shipsLeftVector));
+        %Increment the shotCounter based on how many type2 shots are fired
+        shotCounter = shotCounter + size(type2ShotsStore,1);
     end
-    
-    
     
     %Flag for singleShot
     doSingleShot = 1;

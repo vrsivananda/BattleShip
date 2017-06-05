@@ -320,38 +320,15 @@ function uniqueType2ShotsStore = fireType2Shots(guessBoardAI, nShotsAI, minShipL
                         %(right)
                         %If the right is within the board, box is 0, and 
                         %there are shots left, then fire the right
-                        if( j+1 <= maxCols && guessBoardAI(i,j+1,k) == 0 && nShotsLeft > 0 )
+                        if( j+1 <= maxCols && guessBoardAI(i+1,j,k) == 0 && nShotsLeft > 0 )
                              %Block the location to avoid double-shooting
-                             guessBoardAI(i,j+1,k) = 5;
+                             guessBoardAI(i+1,j,k) = 5;
                              %Store the shot in the shots store
-                             type2ShotsStore(size(type2ShotsStore,1)+1,:) = [i,j+1,k];
+                             type2ShotsStore(size(type2ShotsStore,1)+1,:) = [i+1,j,k];
                              %Decrement the number of shots left
                              nShotsLeft = nShotsLeft - 1;
                         end
-                        %----
-                        %(inner)
-                        %If the inner is within the board, box is 0, and 
-                        %there are shots left, then fire the inner
-                        if( k-1 >= 1 && guessBoardAI(i,j,k-1) == 0 && nShotsLeft > 0 )
-                             %Block the location to avoid double-shooting
-                             guessBoardAI(i,j,k-1) = 5;
-                             %Store the shot in the shots store
-                             type2ShotsStore(size(type2ShotsStore,1)+1,:) = [i,j,k-1];
-                             %Decrement the number of shots left
-                             nShotsLeft = nShotsLeft - 1;
-                        end
-                        %----
-                        %(outer)
-                        %If the outer is within the board, box is 0, and 
-                        %there are shots left, then fire the outer
-                        if( k+1 <= maxSheets && guessBoardAI(i,j,k+1) == 0 && nShotsLeft > 0 )
-                             %Block the location to avoid double-shooting
-                             guessBoardAI(i,j,k+1) = 5;
-                             %Store the shot in the shots store
-                             type2ShotsStore(size(type2ShotsStore,1)+1,:) = [i,j,k+1];
-                             %Decrement the number of shots left
-                             nShotsLeft = nShotsLeft - 1;
-                        end
+                       
                     end
                     
                     
