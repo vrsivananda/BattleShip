@@ -45,12 +45,10 @@ while ~anyoneWins
     if nShotsH == 0
         anyoneWins = 1;
         disp('Game Over! Computer wins.')
-        displayBoard(shipBoardH,guessBoardH);
     end
     if nShotsAI == 0
         anyoneWins = 1;
         disp('Congratulations! You win!')
-        displayBoard(shipBoardH,guessBoardH);
     end
 end
 
