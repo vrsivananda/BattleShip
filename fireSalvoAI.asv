@@ -12,34 +12,34 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
     
     shipsLeftVector = shipsLeft(shipBoardH);
     nshipsLeft = length(shipsLeftVector);
-    smallestShip = min(shipsLeftVector);
+    minShipLength = min(shipsLeftVector);
+    
+    %Declare type2ShotsStore to pass into fireType1 in case we have no
+    %type2 shots
+    type2ShotsStore = [];
     
     %----------Type 2 Shots---------
     %If there are ships which have been hit but not sunk and the
     %there are still shots left, fire type 2 shots
     if ( any(any(any(guessBoardAI == 2))) && shotCounter < nShotsAI )
         %A matrix of shots are returned
-        type2ShotsStore = fireType2Shots(shotBoard, nShotsAI, smallestShip);
+        type2ShotsStore = fireType2Shots(shotBoard, nShotsAI, minShipLength);
         %Increment the shotCounter based on how many type2 shots are fired
         shotCounter = shotCounter + size(type2ShotsStore,1);
     end
     
     %----------Type 1 Shots---------
-    %Flag for singleShot
-    doSingleShot = 1;
     
     %As long as we can still fire a single shot, and we have not fired all
     %our shots, fire the singleShot
-    while (doSingleShot && shotCounter < nShotsAI)
-        shotBoard = singleShot(shotBoard);
-    end
+    type1ShotsStore = fireType1Shots(guessBoardAI, nShotsAI,shotCounter, type2ShotsStore, minShipLength);
     
     %----------Update shipBoardH and guessBoardAI---------
     %Go through the shots store one by one and match with both boards
     %(update accordingly)
     
     %Merge both the type1 and type2 shot stores
-    bothShotsStore = [type2ShotsStore type1ShotsStore];
+    bothShotsStore = [type2ShotsStore; type1ShotsStore];
     
     %for each row of shotsStore
     for i = 1:size(bothShotsStore,1)
@@ -69,5 +69,17 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
             disp('Fired in a 3 spot. Redundant firing.');
         end
     end %end of for loop
-
+    
+    %----------Sink the ships if any---------
+    %Sink the ships on both boards
+    [shipBoardH, guessBoardAI] = sinkShips(shipBoardH, guessBoardAI);
+    
+    
+    %----------Calculate the number of shots left---------
+    %%%NEED TO FILL IN%%%
+    
+    %Return the parameters
+    updated_shipBoardH = shipBoardH
+    updated_guessBoardAI
+    nShotsH
 end

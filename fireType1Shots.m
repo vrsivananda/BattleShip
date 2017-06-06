@@ -7,6 +7,9 @@ nShotsLeft = nShotsAI - shotCounter;
 %Declare a storage to store type1 shots
 type1ShotsStore = [];
 
+%Declare ShotBoard in case there are no type2 shots
+ShotBoard = guessBoardAI;
+
 %Represent the board with type2 shots done
 
 for i=1:size(type2ShotsStore,1)

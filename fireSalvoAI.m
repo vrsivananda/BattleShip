@@ -14,6 +14,10 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
     nshipsLeft = length(shipsLeftVector);
     minShipLength = min(shipsLeftVector);
     
+    %Declare type2ShotsStore to pass into fireType1 in case we have no
+    %type2 shots
+    type2ShotsStore = [];
+    
     %----------Type 2 Shots---------
     %If there are ships which have been hit but not sunk and the
     %there are still shots left, fire type 2 shots
@@ -72,5 +76,10 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
     
     
     %----------Calculate the number of shots left---------
+    %%%NEED TO FILL IN%%%
     
+    %Return the parameters
+    updated_shipBoardH = shipBoardH;
+    updated_guessBoardAI = guessBoardAI;
+    nShotsH = 30; %NEED TO CHANGE!!
 end
