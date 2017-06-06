@@ -87,5 +87,4 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
     %Return the parameters
     updated_shipBoardH = shipBoardH;
     updated_guessBoardAI = guessBoardAI;
-    nShotsH = 30; %NEED TO CHANGE!!
 end
