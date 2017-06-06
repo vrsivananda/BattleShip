@@ -6,7 +6,7 @@ sheets = 6;
 
 disp('Q: What is the size of the 3-D board you want to play with? (e.g.[5 5 5])');
 sizeBoard = input('\nAns:  ');
-if ~isnumeric(dimBoard) || size(dimBoard) ~= 3;
+if ~isnumeric(sizeBoard) || any(size(sizeBoard) ~= [1 3]);
     disp('Invalid input. The default size will be applied.');
 else
     rows = sizeBoard(1);
