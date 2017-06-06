@@ -1,6 +1,17 @@
 function [updated_shipBoardAI, updated_guessBoardH, nShotsAI] = fireSalvoHuman(shipBoardAI, guessBoardH, nShotsH)
 
+shipBoardAI(:,:,1)=[3,3,3,1,0;-1,3,-2,0,0;0,0,-1,1,0;1,2,-1,1,3];
+shipBoardAI(:,:,2)=[-1,3,2,0,0;-1,0,-2,0,0;0,0,-1,1,0;2,1,-1,0,3];
+shipBoardAI(:,:,3)=[1,2,0,1,0;-1,0,-2,0,0;0,0,0,0,0;2,1,-1,0,3];
+
+guessBoardH(:,:,1)=[3,3,3,1,0;-1,3,-2,0,0;0,0,-1,1,0;1,2,-1,1,3];
+guessBoardH(:,:,2)=[-1,3,2,0,0;-1,0,-2,0,0;0,0,-1,1,0;2,1,-1,0,3];
+guessBoardH(:,:,3)=[1,2,0,1,0;-1,0,-2,0,0;0,0,0,0,0;2,1,-1,0,3];
+
 nShotsH=5;
+
+% check for inputs %
+
 
 % create an empty variable storing firePositions
 firePos=[];
@@ -13,6 +24,11 @@ while (shotsLeft>0)
     
     % the inputPos will be a string
     inputPos=input('Where to fire? (e.g.[3 2 1]): ');
+    
+    % check for inputs
+    % error msgs
+    
+    
     % add the inputPosVec to the new row of firePos the matrix
     firePos(size(firePos,1)+1,:)=inputPos;
     shotsLeft=shotsLeft-1;
@@ -26,9 +42,7 @@ for n=1:size(firePos,1)
     % get the coordinate
     theFirePos=firePos(n,:);
     % get row, col and depth of the coordinate
-    row=theFirePos(1);
-    col=theFirePos(2);
-    depth=theFirePos(3);
+    [row,col,depth]=size(theFirePos);
     
     % check the value of fire position on enemy's shipBoard
     
@@ -67,9 +81,10 @@ updated_shipBoardAI=shipBoardAI;
 updated_guessBoardH=guessBoardH;
 
 % sunk ship region (set value to 3)
+[updated_shipBoardAI,updated_guessBoardH]=sinkShips(updated_shipBoardAI,updated_guessBoardH);
 
 % sunk ship counter function
-
+sunkShips=sunkShipCounter(updated_shipBoardAI);
 
 % update nShotsAI
 nShotsAI=nShotsH-sunkShips;
