@@ -78,8 +78,11 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
     %----------Calculate the number of shots left---------
     %%%NEED TO FILL IN%%%
     
+    
+    
+    
     %Return the parameters
-    updated_shipBoardH = shipBoardH
-    updated_guessBoardAI
-    nShotsH
+    updated_shipBoardH = shipBoardH;
+    updated_guessBoardAI = guessBoardAI;
+    nShotsH = 30; %NEED TO CHANGE!!
 end

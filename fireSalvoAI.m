@@ -43,28 +43,31 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
     
     %for each row of shotsStore
     for i = 1:size(bothShotsStore,1)
+        currentRow = bothShotsStore(i,1);
+        currentCol = bothShotsStore(i,2);
+        currentSheet = bothShotsStore(i,3);
         % check if the location on shipBoardH is an unhit ship (1)
-        if(shipBoardH(bothShotsStore(i,:)) == 1)
+        if(shipBoardH(currentRow, currentCol, currentSheet) == 1)
             % update shipBoardH to (2)
-            shipBoardH(bothShotsStore(i,:)) = 2; 
+            shipBoardH(currentRow, currentCol, currentSheet) = 2; 
             % update guessBoardAI to (2)
-            guessBoardAI(bothShotsStore(i,:)) = 2; 
+            guessBoardAI(currentRow, currentCol, currentSheet) = 2; 
         % else if empty(0)
-        elseif (shipBoardH(bothShotsStore(i,:)) == 0)
+        elseif (shipBoardH(currentRow, currentCol, currentSheet) == 0)
             %update shipBoardH to (-1)
-            shipBoardH(bothShotsStore(i,:)) = -1; 
+            shipBoardH(currentRow, currentCol, currentSheet) = -1; 
             % update guessBoardAI to (-1)
-            guessBoardAI(bothShotsStore(i,:)) = -1; 
+            guessBoardAI(currentRow, currentCol, currentSheet) = -1; 
         % else if (-1)
-        elseif (shipBoardH(bothShotsStore(i,:)) == -1)
+        elseif (shipBoardH(currentRow, currentCol, currentSheet) == -1)
             %disp(fired at -1 spot)
             disp('Fired in a -1 spot. Redundant firing.');
         % else if (2)
-        elseif (shipBoardH(bothShotsStore(i,:)) == 2)
+        elseif (shipBoardH(currentRow, currentCol, currentSheet) == 2)
             %disp(fired at 2 spot)
             disp('Fired in a 2 spot. Redundant firing.');
         % else if (3)
-        elseif (shipBoardH(bothShotsStore(i,:)) == 3)
+        elseif (shipBoardH(currentRow, currentCol, currentSheet) == 3)
             %disp(fired at 3 spot)
             disp('Fired in a 3 spot. Redundant firing.');
         end
@@ -77,6 +80,9 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
     
     %----------Calculate the number of shots left---------
     %%%NEED TO FILL IN%%%
+    
+    nShotsH = length(shipsLeft(shipBoardH));
+    
     
     %Return the parameters
     updated_shipBoardH = shipBoardH;
