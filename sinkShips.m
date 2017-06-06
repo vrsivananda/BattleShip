@@ -4,7 +4,7 @@
 
 %Used to sink the ships which need to be sunk
 
-function shipBoard = sinkShips(shipBoard)
+function [shipBoard, guessBoard] = sinkShips(shipBoard, guessBoard)
     
     %Get the board dimensions
     [rows, cols, sheets] = size(shipBoard);
@@ -176,6 +176,8 @@ function shipBoard = sinkShips(shipBoard)
                        for h = 1:size(shipBoxesStore,1)
                            currentCoordinates = shipBoxesStore(h,:);
                            shipBoard(currentCoordinates(1),currentCoordinates(2),currentCoordinates(3)) = 3;
+                           %update the guessBoard with the sunk ship
+                           guessBoard(currentCoordinates(1),currentCoordinates(2),currentCoordinates(3)) = 3;
                            
                        end
                     %If not, restore back all the 2s

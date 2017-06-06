@@ -66,8 +66,11 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
         end
     end %end of for loop
     
-    %----------Update shipBoardH and guessBoardAI---------
-    %Calculate the number of ships left
-     
+    %----------Sink the ships if any---------
+    %Sink the ships on both boards
+    [shipBoardH, guessBoardAI] = sinkShips(shipBoardH, guessBoardAI);
+    
+    
+    %----------Calculate the number of shots left---------
     
 end
