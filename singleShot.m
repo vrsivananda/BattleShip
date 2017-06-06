@@ -1,4 +1,4 @@
-function ShotBoard = singleShot(oldShotBoard)
+function [ShotBoard, shotLocation] = singleShot(oldShotBoard,minShipLength)
 % ShotBoard = Internal Shot Mark Board
 % 0 = no shots yet
 % 1 = shot
@@ -18,62 +18,77 @@ minShip = zeros(1,LT);
 % "This part" ends
 
 
+% 4 = Type1 shots done
+% 5 = Type2 shots done
 
 
 ShotBoard = oldShotBoard;
 
-shootIt = 0; % The index of the spot to be shot
-maxSP = 0; % Used for Rule 2, specified later
+% The index of the spot to be shot
+shootIt = 0;
+%Get the max dimensions to avoid going off board
+[rows,columns,sheets] = size(ShotBoard);
+
+nSpots = numel(ShotBoard);
+p = randperm(nSpots); % The sequence of selecting our "random shooting"
+
+LT = minShipLength;
+% Used for Rule 2, specified later
+maxSP = 0;
+minShip = zeros(1,LT);
+% Half length of the smallest ship
+hLT = floor(LT/2);
 
 for i=1:nSpots
     shotIndex = p(i);
     
     % Rule 0: Never shoot a spot which was already shot
-    if (ShotBoard(shotIndex) == 1)
+    if (ShotBoard(shotIndex) ~= 0)
         continue; % to next iteration with the next random position
     end
     
     [R, C, S] = ind2sub(size(ShotBoard),shotIndex);
-     
+    
     
     % The potential of containing a ship towards each sides is 0 if
-    % there is no more spaces than the opposite side or 
-    % some point on this side got shot
+    % there is no more spaces than the opposite side or
+    % some point on this side got shot (assuming that we didn't get any hit
+    % in this round since we can't know)
     
-    s1 = 0; % The potential that the spot towards the bottom contains a ship
-    if R+hLT <= rows        
-    Side1 = ShotBoard(max([R-hLT,1]):min([R+(LT-1),rows]), C, S);
-    s1 = ~isempty(strfind(Side1(:)',minShip));
+    s1 = 0; % The possible ships that the spot towards the bottom contains
+    if R+hLT <= rows
+        Side1 = ShotBoard(max([R-(hLT-1),1]):min([R+(LT-1),rows]), C, S);
+        s1 = size(strfind(Side1(:)',minShip));
     end
     s2 = 0; % Towards the top
-    if R-hLT >= 1        
-    Side2 = ShotBoard(max([R-(LT-1),1]):min([R+hLT,rows]), C, S);
-    s2 = ~isempty(strfind(Side2(:)',minShip));
+    if R-hLT >= 1
+        Side2 = ShotBoard(max([R-(LT-1),1]):min([R+(hLT-1),rows]), C, S);
+        s2 = size(strfind(Side2(:)',minShip));
     end
     s3 = 0; % Towards the right
-    if C+hLT <= columns        
-    Side3 = ShotBoard(R, max([C-hLT,1]):min([C+(LT-1),columns]), S);
-    s3 = ~isempty(strfind(Side3(:)',minShip));
+    if C+hLT <= columns
+        Side3 = ShotBoard(R, max([C-(hLT-1),1]):min([C+(LT-1),columns]), S);
+        s3 = size(strfind(Side3(:)',minShip));
     end
     s4 = 0; % Towards the left
-    if C-hLT >= 1        
-    Side4 = ShotBoard(R, max([C-(LT+1),1]):min([C+hLT,columns]), S);
-    s4 = ~isempty(strfind(Side4(:)',minShip));
+    if C-hLT >= 1
+        Side4 = ShotBoard(R, max([C-(LT+1),1]):min([C+(hLT-1),columns]), S);
+        s4 = size(strfind(Side4(:)',minShip));
     end
     s5 = 0; % Towards higher sheets
     if S+hLT <= sheets
-    Side5 = ShotBoard(R, C, max([S-hLT,1]):min([S+(LT-1),sheets])); 
-    s5 = ~isempty(strfind(Side5(:)',minShip));
+        Side5 = ShotBoard(R, C, max([S-(hLT-1),1]):min([S+(LT-1),sheets]));
+        s5 = size(strfind(Side5(:)',minShip));
     end
     s6 = 0; % Towards lower sheets
     if S-hLT >= 1
-    Side6 = ShotBoard(R, C, max([S-(LT-1),1]):min([S+hLT,sheets]));
-    s6 = ~isempty(strfind(Side6(:)',minShip));
+        Side6 = ShotBoard(R, C, max([S-(LT-1),1]):min([S+(hLT-1),sheets]));
+        s6 = size(strfind(Side6(:)',minShip));
     end
     
     ShipPotential = s1 + s2 + s3 + s4 + s5 + s6;
     
-     
+    
     % Rule 1: Never shoot a spot which has no possible ship on any side
     if (ShipPotential == 0)
         continue;
@@ -89,13 +104,25 @@ for i=1:nSpots
     end
 end
 
-if shootIt == 0 % Type 1 Random Shot is no longer needed.
-    
-    % The next two lines should be replaced by terminating this function
-    % and using the current fire for Type 2 Shots, etc.
-    warndlg('You exhausted all possible spots for Type 1 Random Shot!')
-    shootIt = shotIndex; % Shoot a random spot which is actually useless
+if shootIt == 0
+    % Rule 1 is abandoned in this case because we have to abandon the
+    % assumption that we didn't get any hit in this round
+    for i=1:nSpots
+        shotIndex = p(i);
+        
+        % Rule 0 still have to be applied
+        if (ShotBoard(shotIndex) ~= 0)
+            continue; % to next iteration with the next random position
+        end
+         
+        shootIt = shotIndex; % Shoot a random spot with no strategies
+        break
+    end
 end
 
 % Represent the shot
-ShotBoard(shootIt) = 1;
+ShotBoard(shootIt) = 4;
+[Rs, Cs, Ss] = ind2sub(size(ShotBoard),shootIt);
+shotLocation = [Rs, Cs, Ss];
+ 
+end % End of function
