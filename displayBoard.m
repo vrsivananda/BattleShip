@@ -54,7 +54,7 @@ for i1=1:l1
     image(14.*(thisLayer+1));
     title(['Layer' num2str(i1)]);
 end
- 
+
 % Plot the guessBoard
 figure('NumberTitle', 'off', 'Name', 'Current Guess Board',...
     'Position',[leftF+size1(1)+gapF bottomF size2]);
@@ -68,6 +68,6 @@ for i2=1:l2
     title(['Layer' num2str(i2)]);
 end
 
-
+% Manual Legend
 
 
