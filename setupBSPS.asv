@@ -17,19 +17,13 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
     %======================================
     %Ship sizes: 6,5,4,4,3,3,2,spaceStation
     %Create cell array of ship lengths
-    validEntry = false;
-    while (validEntry == false)
-        ansForShips = input('\nQ: Would you like to play with length 5 ships? (y/n) \nAns:  ','s');
-        if (ansForShips == 'y')
-            shipLengths = [5,5,5,5,5];
-            validEntry = true;
-        else
-            shipLengths = [6,5,4,4,3,3,2];
-            validEntry = true;
-        end
-        if(validEntry == false)
-           disp('Please enter either "y" or "n". '); 
-        end
+    validEntry = true;
+    while (validEntry
+    ansForShips = input('\nQ: Would you like to play with length 5 ships? (y/n) \nAns:  ','s');
+    if (ansForShips == 'y')
+        shipLengths = [5,5,5,5,5];
+    else
+        shipLengths = [6,5,4,4,3,3,2];
     end
     
     
@@ -43,12 +37,6 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
     
     %variable for number of ships
     nShips = size(shipLengths,2);
-    
-    %Ask for restarting the game if there's no ship fitting current board
-    if nShips == 0
-        error('There is no ship fitting current board! Please restart.');
-    end
-
     
     %Create a variable to store if the board is 2d
     boardIs2D = ~(rows ~= 1 && cols ~= 1 && sheets ~= 1);
@@ -118,7 +106,7 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
                 continue;
             %Check that all the values entered are within the scope of the
             %board
-            elseif(headPlace(1) < 1 || headPlace(1) > rows || headPlace(2) < 1 || headPlace(2) > cols || headPlace(3) < 1 || headPlace(3) > sheets)
+            elseif(headPlace(1) < 0 || headPlace(1) > rows || headPlace(2) < 0 || headPlace(2) > cols || headPlace(3) < 0 || headPlace(3) > sheets)
                 %If they are not, then redo the while loop and ask again
                 disp('---> Location is outside board. Please choose again.');
                 continue;
