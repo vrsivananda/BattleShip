@@ -27,8 +27,8 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
             shipLengths = [6,5,4,4,3,3,2];
             validEntry = true;
         end
-        if(validEntry == false)
-           disp('Please enter either "y" or "n". '); 
+        if (validEntry == false)     
+            disp('Please enter either "y" or "n". '); 
         end
     end
     
@@ -36,7 +36,7 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
     
     %Go through the ship lengths and delete those that do not fit
     for i = size(shipLengths,2):-1:1
-        if(shipLengths(i) > rows && shipLengths(i) > cols && shipLengths(i) > sheets)
+        if (shipLengths(i) > rows && shipLengths(i) > cols && shipLengths(i) > sheets)
             shipLengths(i) = [];
         end
     end
@@ -101,10 +101,11 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
     for i = 1:nShips %comment for DEBUGGING
     %while(false) %uncomment for DEBUGGING
         %disp('i = ' + num2str(i));
-        disp(i);
+        disp(['\nto place Ship' num2str(i) ':']);
         theLength = shipLengths(i);
         
-        disp('Current board');
+        disp(['Current board (5 indicates the neighboring area of placed ships'...
+            ', where you will not be able to put another ship.)']);
         disp(shipBoardH);
         %Flag for a redo in case entry is inappropriate
         redo = true;
