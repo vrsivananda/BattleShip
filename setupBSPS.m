@@ -212,7 +212,7 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
 
 %---Commented out because no spaceship---
 %     %Place space station if board is not 2D
-    if(~boardIs2D && haveSpaceShip)
+    if(~boardIs2D && haveSpaceStation)
          %Place space station in random corner
         if sheets > 1
              randSheetSS = randi(sheets-1); %Uncommented because used below (to determine which half of the sheets to place the next ship)
