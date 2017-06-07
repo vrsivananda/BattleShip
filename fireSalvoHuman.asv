@@ -16,10 +16,7 @@ function [updated_shipBoardAI, updated_guessBoardH, nShotsAI] = fireSalvoHuman(s
 
 % check for inputs %
 
-%Get the dimensions of the board
-rows = size(guessBoardH,1);
-cols = size(guessBoardH,2);
-sheets = size(guessBoardH,3);
+%
 
 
 % create an empty variable storing firePositions
