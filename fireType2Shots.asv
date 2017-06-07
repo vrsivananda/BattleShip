@@ -151,7 +151,7 @@ for k = 1:maxSheets
                     %empty spot, and there are still shots left, and we
                     %only shoot up to the min ship length to not waste
                     %shots (in case boards are huge)
-                    while (j+rightCounter<= maxCols && guessBoardAI(i,j+rightCounter,k) == 0 && nShotsLeft > 0 && shotsFiredCounter <= ceil((minShipLength-1)/2))
+                    while (j+rightCounter<= maxCols && guessBoardAI(i,j+rightCounter,k) == 0 && nShotsLeft > 0 && shotsFiredCounter <= minShipLength-1)
                         %Block the location to avoid double-shooting
                         guessBoardAI(i,j+rightCounter,k) = 5;
                         
@@ -187,7 +187,7 @@ for k = 1:maxSheets
                     %empty spot, and there are still shots left, and we
                     %only shoot up to the min ship length to not waste
                     %shots (in case boards are huge)
-                    while (k-outerCounter >= 1 && guessBoardAI(i,j,k-outerCounter) == 0 && nShotsLeft > 0 && shotsFiredCounter <= ceil((minShipLength-1)/2))
+                    while (k-outerCounter >= 1 && guessBoardAI(i,j,k-outerCounter) == 0 && nShotsLeft > 0 && shotsFiredCounter <= minShipLength-1)
                         %Block the location to avoid double-shooting
                         guessBoardAI(i,j,k-outerCounter) = 5;
                         
@@ -223,7 +223,7 @@ for k = 1:maxSheets
                     %empty spot, and there are still shots left, and we
                     %only shoot up to the min ship length to not waste
                     %shots (in case boards are huge)
-                    while (k+innerCounter<= maxSheets && guessBoardAI(i,j,k+innerCounter) == 0 && nShotsLeft > 0 && shotsFiredCounter <= ceil((minShipLength-1)/2))
+                    while (k+innerCounter<= maxSheets && guessBoardAI(i,j,k+innerCounter) == 0 && nShotsLeft > 0 && shotsFiredCounter <= minShipLength-1)
                         %Block the location to avoid double-shooting
                         guessBoardAI(i,j,k+innerCounter) = 5;
                         
