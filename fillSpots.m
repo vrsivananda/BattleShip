@@ -1,11 +1,11 @@
 function output = fillSpots(headPlace, tailPlace, shipBoard)
 
-    %for debugging
-    disp('-----------fillSpots----------');
-    disp('headPlace:');
-    disp(headPlace);
-    disp('tailPlace:');
-    disp(tailPlace);
+%     %for debugging
+%     disp('-----------fillSpots----------');
+%     disp('headPlace:');
+%     disp(headPlace);
+%     disp('tailPlace:');
+%     disp(tailPlace);
     
     [maxRows, maxCols, maxSheets] = size(shipBoard);
     %----------------------------------------------------------------------

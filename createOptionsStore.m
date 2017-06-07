@@ -1,9 +1,9 @@
 function output = createOptionsStore(headPlace, theLength, shipBoard)
     
-    %for debugging
-    disp('-----------createOptionsStore----------');
-    disp('headPlace:');
-    disp(headPlace);
+%     %for debugging
+%     disp('-----------createOptionsStore----------');
+%     disp('headPlace:');
+%     disp(headPlace);
     
     rows = size(shipBoard,1);
     cols = size(shipBoard,2);
