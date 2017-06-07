@@ -93,7 +93,7 @@ function shipsLeftVector = shipsLeft(shipBoard)
         end %end of cols
     end %end of sheets
     
-    disp('shipBoard after shipsLeft:');
-    disp(shipBoard);
+%     disp('shipBoard after shipsLeft:');
+%     disp(shipBoard);
 
 end

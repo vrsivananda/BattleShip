@@ -92,7 +92,7 @@ function sunkShipsVector = shipsSunk(shipBoard)
         end %end of cols
     end %end of sheets
     
-    disp('shipBoard after shipsSunk:');
-    disp(shipBoard);
+%     disp('shipBoard after shipsSunk:');
+%     disp(shipBoard);
 
 end
