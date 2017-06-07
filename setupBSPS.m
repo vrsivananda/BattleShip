@@ -105,7 +105,8 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
     for i = 1:nShips %comment for DEBUGGING
     %while(false) %uncomment for DEBUGGING
         %disp('i = ' + num2str(i));
-        disp(['\nto place Ship' num2str(i) ':']);
+        disp('');
+        disp(['to place Ship' num2str(i) ':']);
         theLength = shipLengths(i);
         
         disp(['Current board (5 indicates the neighboring area of placed ships'...
