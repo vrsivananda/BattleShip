@@ -46,6 +46,20 @@ function [updated_shipBoardH, updated_guessBoardAI, nShotsH] = fireSalvoAI(shipB
         currentRow = bothShotsStore(i,1);
         currentCol = bothShotsStore(i,2);
         currentSheet = bothShotsStore(i,3);
+        
+        %Here is some bugs but I don't know what's wrong so that I 
+        %temporarily fix it in this way:
+%         if 
+% i
+%             currentRow
+%             currentCol
+%             currentSheet
+%             bothShotsStore
+% pause;
+%             break
+%         end
+            %further fixing needed.
+        
         % check if the location on shipBoardH is an unhit ship (1)
         if(shipBoardH(currentRow, currentCol, currentSheet) == 1)
             % update shipBoardH to (2)

@@ -2,20 +2,15 @@ function [ShotBoard, shotLocation] = singleShot(oldShotBoard,minShipLength)
 % ShotBoard = Internal Shot Mark Board
 % 0 = no shots yet
 % 1 = shot
-
-
-% This part should be outside the singleShot function in the AI function
+ 
 [rows,columns,sheets] = size(oldShotBoard);
 nSpots = numel(oldShotBoard);
 p = randperm(nSpots); % The sequence of our "random shooting"
-% for the same-length ship version
-theRestShipLengths = [5 5 5 5 5];
 % the minimum Length of Targets
-LT = min(theRestShipLengths);
+LT = minShipLength;
 % Half length of the smallest ship
-hLT = floor((LT-1)/2);
+hLT = floor(LT/2);
 minShip = zeros(1,LT);
-% "This part" ends
 
 
 % 4 = Type1 shots done
@@ -57,33 +52,33 @@ for i=1:nSpots
     
     s1 = 0; % The possible ships that the spot towards the bottom contains
     if R+hLT <= rows
-        Side1 = ShotBoard(max([R-(hLT-1),1]):min([R+(LT-1),rows]), C, S);
-        s1 = size(strfind(Side1(:)',minShip));
+        Side1 = ShotBoard(max([R-hLT,1]):min([R+(LT-1),rows]), C, S);
+        s1 = length(strfind(Side1(:)',minShip));
     end
     s2 = 0; % Towards the top
     if R-hLT >= 1
-        Side2 = ShotBoard(max([R-(LT-1),1]):min([R+(hLT-1),rows]), C, S);
-        s2 = size(strfind(Side2(:)',minShip));
+        Side2 = ShotBoard(max([R-(LT-1),1]):min([R+hLT,rows]), C, S);
+        s2 = length(strfind(Side2(:)',minShip));
     end
     s3 = 0; % Towards the right
     if C+hLT <= columns
-        Side3 = ShotBoard(R, max([C-(hLT-1),1]):min([C+(LT-1),columns]), S);
-        s3 = size(strfind(Side3(:)',minShip));
+        Side3 = ShotBoard(R, max([C-hLT,1]):min([C+(LT-1),columns]), S);
+        s3 = length(strfind(Side3(:)',minShip));
     end
     s4 = 0; % Towards the left
     if C-hLT >= 1
-        Side4 = ShotBoard(R, max([C-(LT+1),1]):min([C+(hLT-1),columns]), S);
-        s4 = size(strfind(Side4(:)',minShip));
+        Side4 = ShotBoard(R, max([C-(LT+1),1]):min([C+hLT,columns]), S);
+        s4 = length(strfind(Side4(:)',minShip));
     end
     s5 = 0; % Towards higher sheets
     if S+hLT <= sheets
-        Side5 = ShotBoard(R, C, max([S-(hLT-1),1]):min([S+(LT-1),sheets]));
-        s5 = size(strfind(Side5(:)',minShip));
+        Side5 = ShotBoard(R, C, max([S-hLT,1]):min([S+(LT-1),sheets]));
+        s5 = length(strfind(Side5(:)',minShip));
     end
     s6 = 0; % Towards lower sheets
     if S-hLT >= 1
-        Side6 = ShotBoard(R, C, max([S-(LT-1),1]):min([S+(hLT-1),sheets]));
-        s6 = size(strfind(Side6(:)',minShip));
+        Side6 = ShotBoard(R, C, max([S-(LT-1),1]):min([S+hLT,sheets]));
+        s6 = length(strfind(Side6(:)',minShip));
     end
     
     ShipPotential = s1 + s2 + s3 + s4 + s5 + s6;
