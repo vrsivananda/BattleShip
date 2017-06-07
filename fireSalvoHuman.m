@@ -62,7 +62,13 @@ while (shotsLeft>0)
     
     % add the inputPosVec to the new row of firePos the matrix
     firePos(size(firePos,1)+1,:)=inputPos;
-    shotsLeft=shotsLeft-1;
+    if size(unique(firePos,'rows'),1) == size(firePos,1)
+        shotsLeft=shotsLeft-1;
+    else
+        firePos = unique(firePos,'rows');
+        disp('---> Location has been fired upon previously. Please choose again.');
+    end
+    
     
 end % end of outer while loop
 

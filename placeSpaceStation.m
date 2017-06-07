@@ -51,7 +51,7 @@ function output = placeSpaceStation(topLeftForward, shipBoard)
         shipBoard(row,col+2,sheet) = 5; 
         shipBoard(row+1,col+2,sheet) = 5;
         shipBoard(row,col+2,sheet+1) = 5;
-        shipBoard(row,col+2,sheet+1) = 5;
+        shipBoard(row+1,col+2,sheet+1) = 5;
     end
     
     % Near(outer) of above new(outer) Layer
