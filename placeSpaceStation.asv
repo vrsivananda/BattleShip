@@ -34,9 +34,9 @@ function output = placeSpaceStation(topLeftForward, shipBoard)
     % Row below Bottom Layer
     if(row+1 <= maxRows)
         shipBoard(row+2,col,sheet) = 5; 
-        shipBoard(row+2,col+1,sheet) = 5;
-        shipBoard(row+2,col,sheet+1) = 5;
-        shipBoard(row+2,col+1,sheet+1) = 5;
+        shipBoard(row+1,col+1,sheet) = 5;
+        shipBoard(row+1,col,sheet+1) = 5;
+        shipBoard(row+1,col+1,sheet+1) = 5;
     end
     
     % Left of above left Layer
