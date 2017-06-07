@@ -1,10 +1,10 @@
 function output = checkRange(headPlace, tailPlace, shipBoard)    
-    %for debugging
-    disp('-----------checkRange----------');
-    disp('headPlace:');
-    disp(headPlace);
-    disp('tailPlace:');
-    disp(tailPlace);
+%     %for debugging
+%     disp('-----------checkRange----------');
+%     disp('headPlace:');
+%     disp(headPlace);
+%     disp('tailPlace:');
+%     disp(tailPlace);
     
     %If head < tail, start from head
     

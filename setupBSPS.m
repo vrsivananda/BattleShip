@@ -36,6 +36,12 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
     %variable for number of ships
     nShips = size(shipLengths,2);
     
+    %Ask for restarting the game if there's no ship fitting current board
+    if nShips == 0
+        error('There is no ship fitting current board! Please restart.');
+    end
+
+    
     %Create a variable to store if the board is 2d
     boardIs2D = ~(rows ~= 1 && cols ~= 1 && sheets ~= 1);
     
