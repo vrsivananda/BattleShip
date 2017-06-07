@@ -164,7 +164,7 @@ function output = fillSpots(headPlace, tailPlace, shipBoard)
     %----------------------------------------------------------------------
     
     %If somehow more rows, cols, or sheets are added, throw an error
-    if ([maxRows, maxCols, maxSheets] ~= size(shipBoard))
+    if any([maxRows, maxCols, maxSheets] ~= [size(shipBoard,1),size(shipBoard,2),size(shipBoard,3)])
         error('dimensions in fillSpots do not match!');
     end
     

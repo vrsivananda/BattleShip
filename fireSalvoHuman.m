@@ -1,6 +1,21 @@
 function [updated_shipBoardAI, updated_guessBoardH, nShotsAI] = fireSalvoHuman(shipBoardAI, guessBoardH, nShotsH)
 
-nShotsH=5;
+% testing
+
+%  shipBoardAI(:,:,1)=[1,1,1,0,0;0,0,0,1,0;0,0,0,0,0;0,0,0,0,0];
+%  shipBoardAI(:,:,2)=[0,0,0,0,0;0,0,0,1,0;0,1,0,0,0;0,1,0,0,0];
+%  shipBoardAI(:,:,3)=[0,0,0,0,0;0,0,0,1,0;0,0,0,0,0;0,0,0,0,0];
+%  
+%  guessBoardH(:,:,1)=[0,0,0,0,0;0,0,0,0,0;0,0,0,0,0;0,0,0,0,0];
+%  guessBoardH(:,:,2)=[0,0,0,0,0;0,0,0,0,0;0,0,0,0,0;0,0,0,0,0];
+%  guessBoardH(:,:,3)=[0,0,0,0,0;0,0,0,0,0;0,0,0,0,0;0,0,0,0,0];
+%  
+%  nShotsH=2;
+
+% end of testing
+
+% check for inputs %
+
 
 % create an empty variable storing firePositions
 firePos=[];
@@ -13,6 +28,11 @@ while (shotsLeft>0)
     
     % the inputPos will be a string
     inputPos=input('Where to fire? (e.g.[3 2 1]): ');
+    
+    % check for inputs
+    % error msgs
+    
+    
     % add the inputPosVec to the new row of firePos the matrix
     firePos(size(firePos,1)+1,:)=inputPos;
     shotsLeft=shotsLeft-1;
@@ -26,21 +46,21 @@ for n=1:size(firePos,1)
     % get the coordinate
     theFirePos=firePos(n,:);
     % get row, col and depth of the coordinate
-    row=theFirePos(1);
-    col=theFirePos(2);
-    depth=theFirePos(3);
+    row = theFirePos(1);
+    col = theFirePos(2);
+    depth = theFirePos(3);
     
     % check the value of fire position on enemy's shipBoard
     
     % check if it is an empty space
-    if shipBoardAI(row,col,depth)==0;
+    if shipBoardAI(row,col,depth)==0
         disp('Miss :(');
         % update the fired empty space on shipBoardAI
         shipBoardAI(row,col,depth)=-1;
         % update the fired empty space on guessBoardH
         guessBoardH(row,col,depth)=-1;
     % check if it contains a ship
-    elseif shipBoardAI(row,col,depth)==1;
+    elseif shipBoardAI(row,col,depth)==1
         disp('Hits! :)');
         % update the fired ship space on shipBoardAI
         shipBoardAI(row,col,depth)=2;
@@ -67,12 +87,14 @@ updated_shipBoardAI=shipBoardAI;
 updated_guessBoardH=guessBoardH;
 
 % sunk ship region (set value to 3)
+[updated_shipBoardAI,updated_guessBoardH]=sinkShips(updated_shipBoardAI,updated_guessBoardH);
 
 % sunk ship counter function
-
+%sunkShips=sunkShipCounter(updated_shipBoardAI);
 
 % update nShotsAI
-nShotsAI=nShotsH-sunkShips;
+%nShotsAI=nShotsH-sunkShips;
+nShotsAI = length(shipsLeft(updated_shipBoardAI));
 
 end
 

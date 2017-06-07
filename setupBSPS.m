@@ -17,7 +17,14 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
     %======================================
     %Ship sizes: 6,5,4,4,3,3,2,spaceStation
     %Create cell array of ship lengths
-    shipLengths = [6,5,4,4,3,3,2];
+    ansForShips = input('\nQ: Would you like to play with length 5 ships? (y/n) \nAns:  ','s');
+    if (ansForShips == 'y')
+        shipLengths = [5,5,5,5,5];
+    else
+        shipLengths = [6,5,4,4,3,3,2];
+    end
+    
+    
     
     %Go through the ship lengths and delete those that do not fit
     for i = size(shipLengths,2):-1:1
@@ -77,8 +84,8 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
     
     %Loop through the remaining ships and ask where the user wants to place
     %them
-    %for i = 1:nShips %comment for DEBUGGING
-    while(false) %uncomment for DEBUGGING
+    for i = 1:nShips %comment for DEBUGGING
+    %while(false) %uncomment for DEBUGGING
         %disp('i = ' + num2str(i));
         disp(i);
         theLength = shipLengths(i);
@@ -171,7 +178,11 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
 %     %Place space station if board is not 2D
 %     if(~boardIs2D)
 %         %Place space station in random corner
+    if sheets > 1
          randSheetSS = randi(sheets-1); %Uncommented because used below (to determine which half of the sheets to place the next ship)
+    else
+        randSheetSS = 1;
+    end
 %         arrayOfCornersForSpaceStation = [[1,1,randSheetSS]; [1,cols-1,randSheetSS]; [rows-1,1,randSheetSS]; [rows-1,cols-1,randSheetSS]];
 %         shipBoardAI = placeSpaceStation(arrayOfCornersForSpaceStation(randi(4),:),shipBoardAI);
 %         disp(shipBoardAI);
@@ -290,6 +301,8 @@ function [shipBoardH, shipBoardAI] = setupBSPS(rows,cols,sheets)
     
     %Remove all the blockers (5s) and replace them with 0s
     shipBoardAI(shipBoardAI == 5) = 0;
+    shipBoardH(shipBoardH == 5) = 0;
+    
     disp('shipBoardAI:');
     disp(shipBoardAI);
   
