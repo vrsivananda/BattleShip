@@ -50,7 +50,7 @@ while ~anyoneWins
     end
     if nShotsAI == 0
         anyoneWins = 1;
-        close all;
+        close all;  
         displayBoard(shipBoardH,guessBoardH);
         disp('Congratulations! You win!')
     end
